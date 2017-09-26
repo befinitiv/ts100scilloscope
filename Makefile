@@ -7,9 +7,10 @@ LKR_SCRIPT = LinkerScript.ld
 
 CFLAGS  = -std=c11 -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -mcpu=cortex-m3 -mthumb -Iinc -IStdPeriph_Driver/inc -ICMSIS/device/ -ICMSIS/core
 CFLAGS		+= -Os -g3
-#CFLAGS		+= -fno-common -ffunction-sections -fdata-sections
+CFLAGS		+= -fshort-wchar -fno-common -ffunction-sections -fdata-sections -fvisibility=hidden -fsingle-precision-constant -fshort-wchar
 
-LFLAGS  = -static -T$(LKR_SCRIPT) -lc -lnosys
+LFLAGS  = -T$(LKR_SCRIPT) -static $(CFLAGS) -frepo -Wl,-Map=ts100.map -Wl,--gc-sections
+#-Wl,--start-group
 CPFLAGS = -Obinary
 
 
@@ -18,7 +19,10 @@ OBJ = $(SOURCES:.c=.o) startup/startup_stm32.o
 
 all: ts100.bin
 
-%.o: %.c %.s
+%.o: %.s
+	$(AS) -mcpu=cortex-m3 -mthumb -c $< -o $@
+
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ts100.elf: $(OBJ)
