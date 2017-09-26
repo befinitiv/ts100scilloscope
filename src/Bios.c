@@ -32,7 +32,7 @@ void RCC_Config(void) {
 	RCC_AHBPeriph_FLITF, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB |
 	RCC_APB2Periph_ADC1 | RCC_APB2Periph_ADC2, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM3, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM3 | RCC_APB1Periph_I2C1 | RCC_APB1Periph_USB, ENABLE);
 
 	RCC_USBCLKConfig(RCC_USBCLKSource_PLLCLK_Div1);       // USBCLK = 48MHz
 
@@ -85,10 +85,16 @@ void GPIO_Config(void) {
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	//-------- K1 = PA9, K2 = PA6 ------------------------------------------//
-	GPIO_InitStructure.GPIO_Pin = KEY1_PIN | KEY2_PIN;
+	//-------- K1 = PA9 ------------------------------------------//
+	GPIO_InitStructure.GPIO_Pin = KEY1_PIN;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	//Analog input of K2
+	GPIO_InitStructure.GPIO_Pin = KEY2_PIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
 
 	//--------INT 1 == PB5 -------------------------------------------------//
 	GPIO_InitStructure.GPIO_Pin = INT1_PIN;
@@ -116,7 +122,7 @@ void Adc_Init(void) {
 	DMA_InitStructure.DMA_PeripheralBaseAddr = ADC1_DR_Address;
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) ADC1ConvertedValue;
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-	DMA_InitStructure.DMA_BufferSize = 2;
+	DMA_InitStructure.DMA_BufferSize = 3;
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_PeripheralDataSize =
@@ -136,7 +142,7 @@ void Adc_Init(void) {
 	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
 	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
 	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-	ADC_InitStructure.ADC_NbrOfChannel = 2;
+	ADC_InitStructure.ADC_NbrOfChannel = 3;
 	ADC_Init(ADC1, &ADC_InitStructure);
 
 	// ADC2 configuration ------------------------------------------------------//
@@ -150,6 +156,8 @@ void Adc_Init(void) {
 	ADC_Init(ADC2, &ADC_InitStructure);
 
 	// ADC1,2 regular channel7  channel9 and channel8 configuration ----------//
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_6, 3,
+	ADC_SampleTime_239Cycles5); //28 or 55
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_7, 2,
 	ADC_SampleTime_239Cycles5); //28 or 55
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_8, 1,

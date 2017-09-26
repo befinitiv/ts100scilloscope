@@ -28,6 +28,7 @@ int main(void) {
 	if (readIronTemp(0, 1, 0xFFFF) > 500)
 		operatingMode = COOLING;
 
+	//Oscilloscope();
 	while (1) {
 		Clear_Watchdog(); //reset the Watch dog timer
 		ProcessUI();
@@ -93,6 +94,6 @@ void setup() {
 		}
 	}
 
-	Start_Watchdog(5000); //start the system watch dog as 5 second timeout
+//	Start_Watchdog(5000); //start the system watch dog as 5 second timeout
 
 }

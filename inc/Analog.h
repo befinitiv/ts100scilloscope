@@ -12,7 +12,7 @@
 #include "stm32f10x.h"
 #include "Bios.h"
 #include "Interrupt.h"
-extern volatile uint16_t ADC1ConvertedValue[2];
+extern volatile uint16_t ADC1ConvertedValue[3];
 
 uint16_t Get_ADC1Value(uint8_t i);
 uint16_t readIronTemp(uint16_t calibration_temp, uint8_t read,

@@ -39,6 +39,17 @@ uint8_t getOrientation() {
 	return plStatus;
 }
 
+uint8_t getX() {
+	return I2C_RegisterRead(0x1);
+}
+
+uint8_t getY() {
+	return I2C_RegisterRead(0x3);
+}
+uint8_t getZ() {
+	return I2C_RegisterRead(0x5);
+}
+
 void StartUp_Accelerometer(uint8_t sensitivity) {
 	I2C_RegisterWrite(CTRL_REG2, 0); //Normal mode
 	I2C_RegisterWrite( CTRL_REG2, 0x40);	// Reset all registers to POR values

@@ -100,7 +100,7 @@ int readSensorTemp(void) {
 
 }
 
-volatile uint16_t ADC1ConvertedValue[2];
+volatile uint16_t ADC1ConvertedValue[3];
 //returns the latest reading from ADC1 that was buffered using DMA
 uint16_t Get_ADC1Value(uint8_t i) {
 	return ADC1ConvertedValue[i];

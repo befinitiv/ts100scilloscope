@@ -35,4 +35,6 @@ void OLED_DrawSymbol(uint8_t x, uint8_t symbol);
 
 void OLED_SetOrientation(uint8_t ori);
 uint8_t OLED_GetOrientation();
+
+extern uint8_t displayBuffer[];
 #endif

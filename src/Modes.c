@@ -21,8 +21,9 @@ void ProcessUI() {
 	case STARTUP:
 
 		if (Buttons == (BUT_A | BUT_B)) {
-			operatingMode = THERMOMETER;
+			Oscilloscope();
 		} else if (Buttons == BUT_A) {
+			Oscilloscope();
 			//A key pressed so we are moving to soldering mode
 			operatingMode = SOLDERING;
 			Oled_DisplayOn();
